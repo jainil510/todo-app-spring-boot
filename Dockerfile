@@ -1,11 +1,11 @@
-# Use a base image with Java 17 installed
-FROM openjdk:17-jdk-slim
-
-# Set the working directory inside the container
+# Stage 1: Build the application using Maven
+FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean install -DskipTests
 
-# Copy the compiled JAR file into the container
-COPY target/todo-0.0.1-SNAPSHOT.jar app.jar
-
-# Command to run the application
+# Stage 2: Create the final image
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/todo-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
