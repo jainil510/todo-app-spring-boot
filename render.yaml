@@ -1,7 +1,4 @@
 services:
-  - type: postgres
-    name: todo-database
-    plan: free
   - type: web
     name: todo-app
     runtime: java
@@ -14,3 +11,6 @@ services:
           type: postgres
           name: todo-database
           property: connectionString
+  - type: postgres
+    name: todo-database
+    plan: free
